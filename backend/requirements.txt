@@ -1,0 +1,8 @@
+flask
+torch
+numpy
+earthengine-api
+pandas
+datetime
+requests
+openpyxl

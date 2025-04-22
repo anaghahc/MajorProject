@@ -5,6 +5,7 @@ import json
 import requests
 import  numpy as np
 import torch
+from model_loader import load_model
 
 ee.Authenticate()
 ee.Initialize(project='hcanagha-sentinel')
@@ -54,6 +55,17 @@ station_coords = {
     "Muzaffarnagar": (29.4727, 77.7085),
     "Shamli": (29.4502, 77.3172)
 }
+
+def load_model_by_day(day, device, supports, aptinit):
+    model_day = day if day % 2 == 1 else day + 1
+    model_path = f"models/WaveNet_13_{model_day}.pt"
+    model = load_model(device, supports, aptinit, model_day).to(device)
+    model.load_state_dict(torch.load(model_path, map_location=device))
+    model.eval()
+    return model
+
+def run_prediction(pred, day):
+    return pred[:,:,day-1:day].cpu().numpy().tolist()
 
 
 weather_parameters = {
@@ -154,7 +166,16 @@ def get_pollutant_data(start, end, collection_id, band_name, pollutant_label, di
 
 
 
-def prepare_input_tensor(pred_date_str):
+def prepare_input_tensor(today_date_str):
+    # Convert to datetime object
+    today_date = datetime.strptime(today_date_str, "%Y-%m-%d")
+
+    # Add one day
+    pred_day = today_date + timedelta(days=1)
+
+    # Convert back to string
+    pred_date_str = pred_day.strftime("%Y-%m-%d")
+
     # Dictionary to store data for all parameters
     weather_data = {param: [] for param in weather_parameters.keys()}
     start_date, end_date = get_dates(pred_date_str)
@@ -357,7 +378,7 @@ def prepare_input_tensor(pred_date_str):
     input_tensor = data_3d_tensor.permute(1, 0, 2).unsqueeze(0)
 
 
-    return input_tensor
+    return input_tensor, pred_date_str
 
 
 def denormalise(output):

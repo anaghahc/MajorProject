@@ -71,9 +71,16 @@ function App() {
         </form>
       </div>
 
-      <div className="map-container">
+      <div className="map-container" style={{ position: 'relative' }}>
+        {loading && (
+          <div className="loading-overlay">
+            <div className="spinner"></div>
+          </div>
+        )}
         {mapData && <MapView data={mapData} selectedFeature={selectedFeature} />}
       </div>
+
+
     </div>
   );
 }

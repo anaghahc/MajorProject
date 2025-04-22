@@ -27,6 +27,12 @@ html, body, #root {
 }
 
 .heading {
+  color: #07144f;
+  text-shadow:
+    -2px -2px 0 #b5caec,  
+     2px -2px 0 #b5caec,
+    -2px  2px 0 #b5caec,
+     2px  2px 0 #b5caec;
   text-align: center;
   font-size: 1.8rem;
   margin-top: 20%;
@@ -105,3 +111,32 @@ button:disabled {
   margin-top: 0.5rem;
   font-size: 0.9rem;
 }
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.spinner {
+  border: 6px solid #b6e2c2; /* Light grey */
+  border-top: 6px solid #058c5f; /* Blue */
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+

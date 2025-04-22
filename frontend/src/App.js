@@ -1,33 +1,86 @@
 import React, { useState } from 'react';
 import 'leaflet/dist/leaflet.css';
-
+import './index.css';
 import MapView from './MapView';
 
 function App() {
   const [predDate, setPredDate] = useState('');
+  const [selectedDay, setSelectedDay] = useState('1');
+  const [selectedFeature, setSelectedFeature] = useState('pm10');
   const [mapData, setMapData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch('http://localhost:5000/predict', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ pred_date: predDate })
-    });
-    const data = await res.json();
-    setMapData(data);
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('http://localhost:5000/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          today_date: predDate,
+          day: parseInt(selectedDay),
+          feature: selectedFeature
+        })
+      });
+
+      if (!res.ok) throw new Error('Failed to fetch prediction.');
+      const data = await res.json();
+      setMapData(data);
+    } catch (err) {
+      setError(err.message || 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
+  const features = ['pm10', 'pm2.5', 'co', 'no2', 'so2', 'o3'];
+
   return (
-    <div>
-      <form onSubmit={handleSubmit} style={{ padding: '1rem' }}>
-        <label>
-          Date:
-          <input type="date" value={predDate} onChange={e => setPredDate(e.target.value)} required />
-        </label>
-        <button type="submit">Submit</button>
-      </form>
-      {mapData && <MapView data={mapData} />}
+    <div className="main-layout">
+      <div className="form-panel">
+        <h2 className="heading">Air Quality Prediction</h2>
+        <form onSubmit={handleSubmit} className="form">
+          <label>
+            <span>Today's Date:</span>
+            <input type="date" value={predDate} onChange={e => setPredDate(e.target.value)} required />
+          </label>
+
+          <label>
+            <span>Select Day (1-31):</span>
+            <select value={selectedDay} onChange={e => setSelectedDay(e.target.value)}>
+              {days.map(d => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </label>
+
+          <label>
+            <span>Select Feature:</span>
+            <select value={selectedFeature} onChange={e => setSelectedFeature(e.target.value)}>
+              {features.map(f => <option key={f} value={f}>{f}</option>)}
+            </select>
+          </label>
+
+          <button type="submit" disabled={loading}>
+            {loading ? 'Predicting...' : 'Submit'}
+          </button>
+
+          {error && <div className="error">{error}</div>}
+        </form>
+      </div>
+
+      <div className="map-container" style={{ position: 'relative' }}>
+        {loading && (
+          <div className="loading-overlay">
+            <div className="spinner"></div>
+          </div>
+        )}
+        {mapData && <MapView data={mapData} selectedFeature={selectedFeature} />}
+      </div>
+
+
     </div>
   );
 }

@@ -28,11 +28,19 @@ const MapView = ({ data, selectedFeature }) => {
   }
 
   // Generate date range
+  const formatDate = (d) => {
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+  
   const dateRange = Array.from({ length: numTimesteps }, (_, i) => {
     const d = new Date(pred_date);
     d.setDate(d.getDate() + i);
-    return d.toISOString().split('T')[0];
+    return formatDate(d);
   });
+  
 
   // Safely get reference values
   const refVals = Object.values(station_coords).map((_, i) =>
@@ -59,7 +67,7 @@ const MapView = ({ data, selectedFeature }) => {
   ).map(sum => sum / coords.length);
 
   return (
-    <MapContainer center={center} zoom={9} style={{ height: '80vh', width: '100%' }}>
+    <MapContainer center={center} zoom={9} style={{ height: '100%', width: '100%' }}>
       <TileLayer
         attribution='&copy; OpenStreetMap'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

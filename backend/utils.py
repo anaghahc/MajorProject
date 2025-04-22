@@ -175,7 +175,7 @@ def prepare_input_tensor(today_date_str):
 
     # Convert back to string
     pred_date_str = pred_day.strftime("%Y-%m-%d")
-
+    
     # Dictionary to store data for all parameters
     weather_data = {param: [] for param in weather_parameters.keys()}
     start_date, end_date = get_dates(pred_date_str)

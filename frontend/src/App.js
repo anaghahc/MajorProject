@@ -40,35 +40,40 @@ function App() {
   const features = ['pm10', 'pm2.5', 'co', 'no2', 'so2', 'o3'];
 
   return (
-    <div className="app-container">
-      <form onSubmit={handleSubmit} className="form">
-        <label>
-          <span>Today's Date:</span>
-          <input type="date" value={predDate} onChange={e => setPredDate(e.target.value)} required />
-        </label>
+    <div className="main-layout">
+      <div className="form-panel">
+        <h2 className="heading">Air Quality Prediction</h2>
+        <form onSubmit={handleSubmit} className="form">
+          <label>
+            <span>Today's Date:</span>
+            <input type="date" value={predDate} onChange={e => setPredDate(e.target.value)} required />
+          </label>
 
-        <label>
-          <span>Select Day (1-31):</span>
-          <select value={selectedDay} onChange={e => setSelectedDay(e.target.value)}>
-            {days.map(d => <option key={d} value={d}>{d}</option>)}
-          </select>
-        </label>
+          <label>
+            <span>Select Day (1-31):</span>
+            <select value={selectedDay} onChange={e => setSelectedDay(e.target.value)}>
+              {days.map(d => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </label>
 
-        <label>
-          <span>Select Feature:</span>
-          <select value={selectedFeature} onChange={e => setSelectedFeature(e.target.value)}>
-            {features.map(f => <option key={f} value={f}>{f}</option>)}
-          </select>
-        </label>
+          <label>
+            <span>Select Feature:</span>
+            <select value={selectedFeature} onChange={e => setSelectedFeature(e.target.value)}>
+              {features.map(f => <option key={f} value={f}>{f}</option>)}
+            </select>
+          </label>
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Predicting...' : 'Submit'}
-        </button>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Predicting...' : 'Submit'}
+          </button>
 
-        {error && <div className="error">{error}</div>}
-      </form>
+          {error && <div className="error">{error}</div>}
+        </form>
+      </div>
 
-      {mapData && <MapView data={mapData} selectedFeature={selectedFeature} />}
+      <div className="map-container">
+        {mapData && <MapView data={mapData} selectedFeature={selectedFeature} />}
+      </div>
     </div>
   );
 }

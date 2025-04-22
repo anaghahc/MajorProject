@@ -1,9 +1,43 @@
-body {
+html, body, #root {
+  height: 100%;
+  width: 100%;
   margin: 0;
-  background-color: #f5f6fa;
-  font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
-  color: #333;
+  padding: 0;
 }
+
+.main-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.form-panel {
+  width: 300px;
+  background: #fff;
+  padding: 1.5rem;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.map-container {
+  flex: 1;
+  height: 100%;
+}
+
+.heading {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+select {
+  padding: 0.4rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
 
 .app-container {
   display: flex;

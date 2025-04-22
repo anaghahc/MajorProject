@@ -13,7 +13,9 @@ html, body, #root {
 
 .form-panel {
   width: 300px;
-  background: #fff;
+  background-image: url('/public/cloud.avif');
+  background-size: cover;
+  background-position: center;
   padding: 1.5rem;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
@@ -26,8 +28,9 @@ html, body, #root {
 
 .heading {
   text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  margin-top: 20%;
+  margin-bottom: 40%;
 }
 
 select {
@@ -50,12 +53,15 @@ select {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: white;
+  background: rgba(255, 255, 255, 0.6); /* Translucent white */
+  backdrop-filter: blur(10px); /* Optional: glass blur effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
   padding: 1rem 2rem;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
 }
+
 
 .form label {
   font-weight: 500;

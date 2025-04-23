@@ -6,3 +6,5 @@ pandas
 datetime
 requests
 openpyxl
+gunicorn
+flask-cors

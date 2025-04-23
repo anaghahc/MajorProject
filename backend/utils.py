@@ -6,9 +6,12 @@ import requests
 import  numpy as np
 import torch
 from model_loader import load_model
+import os
+from ee import ServiceAccountCredentials
 
-ee.Authenticate()
-ee.Initialize(project='hcanagha-sentinel')
+# ee.Authenticate()
+credentials = ServiceAccountCredentials(None, os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
+ee.Initialize(credentials)
 
 
 # Load JSON from file

@@ -10,7 +10,9 @@ import os
 from ee import ServiceAccountCredentials
 
 # ee.Authenticate()
-credentials = ServiceAccountCredentials(None, os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
+HERE = os.path.dirname(__file__)
+key_path = os.path.join(HERE, "ee-service-account.json")
+credentials = ServiceAccountCredentials(None, key_path)
 ee.Initialize(credentials)
 
 
